@@ -92,27 +92,33 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu Overlay */}
-      {isOpen && (
-        <div className="fixed inset-0 z-[9999] md:hidden bg-white px-6 pt-24 flex flex-col items-center">
-          <div className="flex flex-col gap-4 text-center">
-             <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-6 right-6 p-2 rounded-full bg-gray-50 text-gray-400 hover:text-primary-dark shadow-sm"
-            >
-              <X className="h-6 w-6" />
-            </button>
-            
-            <div className="mb-8">
-               <Image
-                src="/Keen-Keeper/assets/logo.png"
-                alt="KeenKeeper Logo"
-                width={160}
-                height={50}
-                className="mx-auto"
-              />
-            </div>
-            
-            {NavLinks.map((link) => {
+      <div className={cn(
+        "fixed inset-0 z-[9999] md:hidden bg-white px-6 pt-12 flex flex-col items-center transition-all duration-500 ease-in-out transform",
+        isOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+      )}>
+        <div className="flex flex-col gap-3 text-center w-full items-center">
+           <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-6 right-6 p-2 rounded-full bg-gray-50 text-gray-400 hover:text-primary-dark shadow-sm transition-transform hover:rotate-90"
+          >
+            <X className="h-6 w-6" />
+          </button>
+          
+          <div className={cn(
+            "mb-6 transition-all duration-500 delay-100",
+            isOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+          )}>
+             <Image
+              src="/Keen-Keeper/assets/logo.png"
+              alt="KeenKeeper Logo"
+              width={110}
+              height={34}
+              className="mx-auto h-auto w-[110px]"
+            />
+          </div>
+          
+          <div className="flex flex-col gap-1.5 w-full items-center">
+            {NavLinks.map((link, index) => {
               const isActive = link.href === "/" 
                 ? (pathname === "/" || pathname.startsWith("/friend/"))
                 : pathname === link.href;
@@ -121,21 +127,23 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
+                  style={{ transitionDelay: isOpen ? `${(index + 2) * 100}ms` : '0ms' }}
                   className={cn(
-                    "flex items-center justify-center gap-4 text-2xl font-bold py-4 rounded-xl transition-all duration-300",
+                    "flex items-center justify-center gap-3 text-base font-bold py-2.5 px-6 rounded-xl transition-all duration-500 w-fit min-w-[140px]",
+                    isOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0",
                     isActive 
-                      ? "bg-primary-dark text-white shadow-lg scale-105" 
-                      : "text-gray-400 hover:text-primary-dark active:scale-95"
+                      ? "bg-primary-dark/5 text-primary-dark" 
+                      : "text-gray-400 hover:text-primary-dark active:scale-95 hover:bg-gray-50"
                   )}
                 >
                   <Image
                     src={link.icon}
                     alt=""
-                    width={24}
-                    height={24}
+                    width={16}
+                    height={16}
                     className={cn(
                       "transition-all duration-300",
-                      isActive ? "opacity-100 brightness-0 invert" : "opacity-40"
+                      isActive ? "opacity-100 brightness-0 invert-0" : "opacity-40"
                     )}
                   />
                   {link.name}
@@ -144,7 +152,7 @@ export default function Navbar() {
             })}
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 }
